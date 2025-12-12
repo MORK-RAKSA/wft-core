@@ -1,4 +1,4 @@
-package com.exception.demo.core.exception1;
+package com.exception.demo.core.exception;
 
 import com.exception.demo.core.domain.LocalData;
 import lombok.Getter;
@@ -20,6 +20,11 @@ public class BaseException extends RuntimeException {
 
     protected BaseException(String devMessage) {
         this(LocalData.builder().devMessage(devMessage).build());
+    }
+
+    protected BaseException(String devMessage,  Throwable cause) {
+        super(devMessage, cause);
+        this.data = LocalData.builder().devMessage(devMessage).build();
     }
 
     protected BaseException(String errorCode, String devMessage) {
