@@ -1,4 +1,4 @@
-package com.exception.demo.core.exception1;
+package com.exception.demo.core.exception;
 
 
 import com.exception.demo.core.domain.LocalData;

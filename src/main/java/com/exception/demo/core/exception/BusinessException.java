@@ -1,4 +1,4 @@
-package com.exception.demo.core.exception1;
+package com.exception.demo.core.exception;
 
 
 import com.exception.demo.core.domain.LocalData;
@@ -16,6 +16,11 @@ public class BusinessException extends BaseException {
     public BusinessException(final LocalData data, final Throwable cause) {
         super(data, cause);
     }
+
+    public BusinessException(String message, final Throwable cause) {
+        super(message, cause);
+    }
+
 
     public BusinessException(final String devMessage) {
         super(devMessage);

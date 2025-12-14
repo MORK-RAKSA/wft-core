@@ -23,20 +23,20 @@ configurations {
 }
 
 repositories {
-    maven {
-        credentials {
-            username (System.getenv("NEXUS_USR") != null ? System.getenv("NEXUS_USR") : "$NEXUS_USR")
-            password (System.getenv("NEXUS_PSW") != null ? System.getenv("NEXUS_PSW") : "$NEXUS_PSW")
-        }
-        url "${System.getenv('NEXUS_URL') != null ? System.getenv('NEXUS_URL') : NEXUS_URL}/repository/maven-public/"
-        allowInsecureProtocol = true
-    }
-//        mavenCentral()
+//    maven {
+//        credentials {
+//            username (System.getenv("NEXUS_USR") != null ? System.getenv("NEXUS_USR") : "$NEXUS_USR")
+//            password (System.getenv("NEXUS_PSW") != null ? System.getenv("NEXUS_PSW") : "$NEXUS_PSW")
+//        }
+//        url "${System.getenv('NEXUS_URL') != null ? System.getenv('NEXUS_URL') : NEXUS_URL}/repository/maven-public/"
+//        allowInsecureProtocol = true
+//    }
+        mavenCentral()
 }
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+//	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 //    implementation 'org.springframework.boot:spring-boot-starter-security'
 	compileOnly 'org.projectlombok:lombok'
@@ -52,6 +52,9 @@ dependencies {
     runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
     implementation 'io.micrometer:micrometer-tracing-bridge-brave'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.modelmapper:modelmapper:3.2.1'
+    implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
 //    implementation "kh.com.wingbank.khemarak:khemarak-framework-starter-api:1.2.1"
 }
 

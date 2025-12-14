@@ -5,7 +5,7 @@ import com.exception.demo.core.constant.AppConstant;
 import com.exception.demo.core.constant.DevErrorConstant;
 import com.exception.demo.core.domain.LocalData;
 import com.exception.demo.core.emunz.MessageType;
-import com.exception.demo.core.exception1.BaseException;
+import com.exception.demo.core.exception.BaseException;
 import java.util.Optional;
 import lombok.NonNull;
 import org.slf4j.MDC;

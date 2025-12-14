@@ -7,13 +7,18 @@ spring:
     password: root
     driver-class-name: org.postgresql.Driver
   jpa:
-    database-platform: org.hibernate.dialect.MySQL8Dialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
     hibernate:
       ddl-auto: update
   output:
     ansi:
       enabled: ALWAYS
+  jackson:
+    default-property-inclusion: non-empty
+    property-naming-strategy: SNAKE_CASE
+    serialization:
+      indent-output: false
 
 server:
   port: 8081
