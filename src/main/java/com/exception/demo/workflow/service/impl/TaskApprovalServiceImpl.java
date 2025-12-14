@@ -28,6 +28,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -77,15 +78,37 @@ public class TaskApprovalServiceImpl implements TaskApprovalService {
     }
 
 
+//    @Override
+//    @Transactional
+//    public TaskApprovalResponseDto approveOne(ApproveOneRequestDto requestDto){
+//
+//        Task task = helper.findTaskById(requestDto.getTaskId());
+//        return switch (task.getTaskType()) {
+//            case MOBAPP, ACC_BALANCE -> null;
+//            default -> throw new BusinessException("Unexpected value: " + task.getTaskType());
+//        };
+//    }
+
     @Override
     @Transactional
-    public TaskApprovalResponseDto approveOne(ApproveOneRequestDto requestDto){
+    public TaskApprovalResponseDto approveOne(ApproveOneRequestDto requestDto) {
 
         Task task = helper.findTaskById(requestDto.getTaskId());
-        return switch (task.getTaskType()) {
-            case MOBAPP, ACC_BALANCE -> null;
-            default -> throw new BusinessException("Unexpected value: " + task.getTaskType());
-        };
+        TaskType taskType = task.getTaskType();
+
+        Object handler = registry.getHandler(taskType);
+        Method approveMethod = registry.getApproveMethod(taskType);
+
+        if (ObjectUtils.isEmpty(handler) || ObjectUtils.isEmpty(approveMethod)) {
+            throw new BusinessException("No approval handler for taskType: " + taskType);
+        }
+
+        try {
+            return (TaskApprovalResponseDto)
+                    approveMethod.invoke(handler, requestDto);
+        } catch (Exception e) {
+            throw new RuntimeException("Approve failed for taskId=" + task.getId(), e);
+        }
     }
 
     @Override

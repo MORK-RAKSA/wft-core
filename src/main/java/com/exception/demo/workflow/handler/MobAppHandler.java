@@ -1,10 +1,13 @@
 package com.exception.demo.workflow.handler;
 
+import com.exception.demo.workflow.annotation.WorkflowApprove;
 import com.exception.demo.workflow.annotation.WorkflowRequestType;
 import com.exception.demo.workflow.annotation.WorkflowTaskDetail;
 import com.exception.demo.workflow.annotation.WorkflowTaskType;
 import com.exception.demo.workflow.dto.MobAppPendingDetailResDto;
+import com.exception.demo.workflow.dto.request.ApproveOneRequestDto;
 import com.exception.demo.workflow.dto.request.FeaturePreparedData;
+import com.exception.demo.workflow.dto.response.TaskApprovalResponseDto;
 import com.exception.demo.workflow.enums.RequestType;
 import com.exception.demo.workflow.enums.TaskType;
 import java.util.Map;
@@ -15,6 +18,12 @@ import lombok.extern.slf4j.Slf4j;
 @WorkflowTaskType(TaskType.MOBAPP)
 @RequiredArgsConstructor
 public class MobAppHandler {
+
+
+    @WorkflowApprove
+    public TaskApprovalResponseDto approve(ApproveOneRequestDto dto) {
+        return new TaskApprovalResponseDto("Test Approve Mobile App Task");
+    }
 
     @WorkflowTaskDetail
     public MobAppPendingDetailResDto viewDetail(Long taskId) {

@@ -1,6 +1,7 @@
 package com.exception.demo.workflow;
 
 import com.exception.demo.core.exception.BusinessException;
+import com.exception.demo.workflow.annotation.WorkflowApprove;
 import com.exception.demo.workflow.annotation.WorkflowRequestType;
 import com.exception.demo.workflow.annotation.WorkflowTaskDetail;
 import com.exception.demo.workflow.annotation.WorkflowTaskType;
@@ -23,6 +24,8 @@ public class WorkflowActionRegistry implements ApplicationContextAware {
     private final Map<TaskType, Object> taskTypeMap = new EnumMap<>(TaskType.class);
     private final Map<String, Method> requestTypeMap = new HashMap<>();
     private final Map<TaskType, Method> detailMap = new EnumMap<>(TaskType.class);
+    private final Map<TaskType, Method> approveMap = new HashMap<>();
+
 
     private ApplicationContext context;
 
@@ -55,6 +58,12 @@ public class WorkflowActionRegistry implements ApplicationContextAware {
                 if (detailAnno != null) {
                     detailMap.put(taskType, method);
                 }
+
+                // APPROVE
+                WorkflowApprove approveAnno = method.getAnnotation(WorkflowApprove.class);
+                if (approveAnno != null) {
+                    approveMap.put(taskType, method);
+                }
             }
         }
     }
@@ -86,5 +95,6 @@ public class WorkflowActionRegistry implements ApplicationContextAware {
     public Object getHandler(TaskType t) { return taskTypeMap.get(t); }
     public Method getRequestMethod(TaskType t, RequestType r) { return requestTypeMap.get(String.format("%s:%s", t, r)); }
     public Method getDetailMethod(TaskType t) { return detailMap.get(t); }
+    public Method getApproveMethod(TaskType t) { return approveMap.get(t); }
 
 }

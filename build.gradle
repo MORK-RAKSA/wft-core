@@ -23,15 +23,15 @@ configurations {
 }
 
 repositories {
-    maven {
-        credentials {
-            username (System.getenv("NEXUS_USR") != null ? System.getenv("NEXUS_USR") : "$NEXUS_USR")
-            password (System.getenv("NEXUS_PSW") != null ? System.getenv("NEXUS_PSW") : "$NEXUS_PSW")
-        }
-        url "${System.getenv('NEXUS_URL') != null ? System.getenv('NEXUS_URL') : NEXUS_URL}/repository/maven-public/"
-        allowInsecureProtocol = true
-    }
-//        mavenCentral()
+//    maven {
+//        credentials {
+//            username (System.getenv("NEXUS_USR") != null ? System.getenv("NEXUS_USR") : "$NEXUS_USR")
+//            password (System.getenv("NEXUS_PSW") != null ? System.getenv("NEXUS_PSW") : "$NEXUS_PSW")
+//        }
+//        url "${System.getenv('NEXUS_URL') != null ? System.getenv('NEXUS_URL') : NEXUS_URL}/repository/maven-public/"
+//        allowInsecureProtocol = true
+//    }
+        mavenCentral()
 }
 
 dependencies {

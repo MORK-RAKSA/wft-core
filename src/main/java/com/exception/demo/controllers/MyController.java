@@ -5,8 +5,10 @@ import com.exception.demo.core.response.ResponseMessage;
 import com.exception.demo.core.response.ResponseMessageBuilder;
 import com.exception.demo.service.TestService;
 import com.exception.demo.workflow.WorkflowRequestFacade;
+import com.exception.demo.workflow.dto.request.ApproveOneRequestDto;
 import com.exception.demo.workflow.dto.request.WorkflowPayloadRequestDto;
 import com.exception.demo.workflow.dto.response.SubmitWorkflowResult;
+import com.exception.demo.workflow.dto.response.TaskApprovalResponseDto;
 import com.exception.demo.workflow.dto.response.TaskResponseDetailDto;
 import com.exception.demo.workflow.service.TaskApprovalService;
 import jakarta.validation.Valid;
@@ -59,6 +61,12 @@ public class MyController {
     ) {
         TaskResponseDetailDto result = taskApprovalService.getTaskDetails(id);
         return ResponseEntity.ok(result);
+    }
+
+
+    @PostMapping("/approve")
+    public TaskApprovalResponseDto approve(@RequestBody ApproveOneRequestDto dto) {
+        return taskApprovalService.approveOne(dto);
     }
 
 
