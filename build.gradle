@@ -4,9 +4,10 @@ plugins {
 	id 'io.spring.dependency-management' version '1.1.7'
 	id 'org.hibernate.orm' version '6.6.33.Final'
 	id 'org.graalvm.buildtools.native' version '0.10.6'
+    id 'java-library'
 }
 
-group = 'com.exception'
+group = 'com.github.MORK-RAKSA'
 version = '0.0.1-SNAPSHOT'
 description = 'Demo project for Spring Boot'
 
@@ -17,9 +18,8 @@ java {
 }
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    withSourcesJar()
+    withJavadocJar()
 }
 
 repositories {
