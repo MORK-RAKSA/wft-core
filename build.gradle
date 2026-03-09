@@ -5,6 +5,8 @@ plugins {
 	id 'org.hibernate.orm' version '6.6.33.Final'
 	id 'org.graalvm.buildtools.native' version '0.10.6'
     id 'java-library'
+    id 'maven-publish'
+    id 'signing'
 }
 
 group = 'com.github.MORK-RAKSA'
@@ -12,33 +14,57 @@ version = '0.0.1-SNAPSHOT'
 description = 'Demo project for Spring Boot'
 
 java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
-	}
-}
-
-configurations {
-    withSourcesJar()
-    withJavadocJar()
-}
-
-repositories {
-    maven {
-        credentials {
-            username (System.getenv("NEXUS_USR") != null ? System.getenv("NEXUS_USR") : "$NEXUS_USR")
-            password (System.getenv("NEXUS_PSW") != null ? System.getenv("NEXUS_PSW") : "$NEXUS_PSW")
-        }
-        url "${System.getenv('NEXUS_URL') != null ? System.getenv('NEXUS_URL') : NEXUS_URL}/repository/maven-public/"
-        allowInsecureProtocol = true
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
     }
-//        mavenCentral()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+
+            pom {
+                name = "wft-core"
+                description = "Core Spring utilities"
+                url = "https://github.com/MORK-RAKSA/wft-core"
+
+                licenses {
+                    license {
+                        name = "MIT"
+                        url = "https://opensource.org/licenses/MIT"
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = "mork"
+                        name = "MORK-RAKSA"
+                    }
+                }
+
+                scm {
+                    url = "https://github.com/MORK-RAKSA/wft-core"
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            credentials {
+                username = findProperty("ossrhUser")
+                password = findProperty("ossrhPass")
+            }
+        }
+    }
 }
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-//    implementation 'org.springframework.boot:spring-boot-starter-security'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.projectlombok:lombok'
