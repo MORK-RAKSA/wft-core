@@ -104,6 +104,7 @@ jreleaser {
     deploy {
         maven {
             mavenCentral {
+                active = 'ALWAYS'
                 sonatype {
                     url = "https://central.sonatype.com/api/v1/publisher"
                 }
