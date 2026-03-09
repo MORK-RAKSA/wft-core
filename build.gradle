@@ -101,11 +101,6 @@ tasks.named('test') {
 
 
 jreleaser {
-    signing {
-        active = 'ALWAYS'
-        armored = true
-    }
-
     deploy {
         maven {
             mavenCentral {
