@@ -1,12 +1,13 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.5.7'
+//    id 'org.springframework.boot' version '3.5.7'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'org.hibernate.orm' version '6.6.33.Final'
     id 'org.graalvm.buildtools.native' version '0.10.6'
     id 'java-library'
     id 'maven-publish'
     id 'signing'
+    id "org.jreleaser" version "1.13.1"
 }
 
 group = 'io.github.MORK-RAKSA'
@@ -59,8 +60,6 @@ publishing {
     repositories {
         maven {
             name = "central"
-            url = uri("https://central.sonatype.com/repository/maven-snapshots/")
-
             credentials {
                 username = System.getenv("MAVEN_USERNAME")
                 password = System.getenv("MAVEN_PASSWORD")
