@@ -1,22 +1,25 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.5.7'
-	id 'io.spring.dependency-management' version '1.1.7'
-	id 'org.hibernate.orm' version '6.6.33.Final'
-	id 'org.graalvm.buildtools.native' version '0.10.6'
+    id 'java'
+    id 'org.springframework.boot' version '3.5.7'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'org.hibernate.orm' version '6.6.33.Final'
+    id 'org.graalvm.buildtools.native' version '0.10.6'
     id 'java-library'
     id 'maven-publish'
     id 'signing'
 }
 
-group = 'com.github.MORK-RAKSA'
-version = '0.0.1-SNAPSHOT'
-description = 'Demo project for Spring Boot'
+group = 'io.github.MORK-RAKSA'
+version = '0.0.1'
+description = 'Core Spring utilities'
 
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
     }
+
+    withSourcesJar()
+    withJavadocJar()
 }
 
 publishing {
@@ -31,7 +34,7 @@ publishing {
 
                 licenses {
                     license {
-                        name = "MIT"
+                        name = "MIT License"
                         url = "https://opensource.org/licenses/MIT"
                     }
                 }
@@ -40,10 +43,13 @@ publishing {
                     developer {
                         id = "mork"
                         name = "MORK-RAKSA"
+                        email = "raksamork097@gmail.com"
                     }
                 }
 
                 scm {
+                    connection = "scm:git:git://github.com/MORK-RAKSA/wft-core.git"
+                    developerConnection = "scm:git:ssh://github.com/MORK-RAKSA/wft-core.git"
                     url = "https://github.com/MORK-RAKSA/wft-core"
                 }
             }
@@ -52,24 +58,34 @@ publishing {
 
     repositories {
         maven {
-            url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            name = "central"
+            url = uri("https://central.sonatype.com/repository/maven-snapshots/")
+
             credentials {
-                username = findProperty("ossrhUser")
-                password = findProperty("ossrhPass")
+                username = System.getenv("MAVEN_USERNAME")
+                password = System.getenv("MAVEN_PASSWORD")
             }
         }
     }
 }
 
+signing {
+    def signingKey = findProperty("signingKey")
+    def signingPassword = findProperty("signingPassword")
+
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    sign publishing.publications.mavenJava
+}
+
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.13'
     runtimeOnly 'org.postgresql:postgresql'
     implementation 'org.postgresql:postgresql'
@@ -78,15 +94,9 @@ dependencies {
     runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
     implementation 'io.micrometer:micrometer-tracing-bridge-brave'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
-//    implementation "kh.com.wingbank.khemarak:khemarak-framework-starter-api:1.2.1"
 }
 
-hibernate {
-	enhancement {
-		enableAssociationManagement = true
-	}
-}
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }

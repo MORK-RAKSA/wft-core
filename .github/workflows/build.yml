@@ -1,16 +1,16 @@
-name: Build with Gradle
+name: Publish
 
 on:
   push:
-    branches: [ "main" ]
-    tags: [ "v*" ]
+    tags:
+      - "v*"
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Set up JDK 17
@@ -19,8 +19,15 @@ jobs:
           distribution: temurin
           java-version: 17
 
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
       - name: Make gradlew executable
         run: chmod +x gradlew
 
-      - name: Build
-        run: ./gradlew clean build
+      - name: Publish
+        run: ./gradlew publish
+        env:
+          MAVEN_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.CENTRAL_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingKey: ${{ secrets.GPG_PRIVATE_KEY }}
