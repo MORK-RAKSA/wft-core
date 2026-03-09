@@ -1,4 +1,4 @@
-name: Publish Snapshot
+name: Publish
 
 on:
   push:
@@ -28,7 +28,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Publish
-        run: ./gradlew publish
+        run: ./gradlew jreleaserFullRelease
         env:
           MAVEN_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.CENTRAL_PASSWORD }}
